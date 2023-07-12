@@ -1,45 +1,57 @@
-import { Container, Heading, Text, Box, Button } from '@chakra-ui/react';
-import { FcGoogle } from 'react-icons/fc';
+import { signInWithPopup, getAdditionalUserInfo } from 'firebase/auth';
+import { doc, setDoc, serverTimestamp } from 'firebase/firestore';
+import { useToast } from '@chakra-ui/react';
 
-import { auth, googleProvider } from '../config/firebase';
-import { signInWithPopup } from 'firebase/auth';
+import { auth, googleProvider, db } from '../config/firebase';
+import {
+  SignInContainer,
+  WelcomeTitle,
+  GoogleSignInButton,
+} from '../components/UI/SignInComponents';
 
 const SignIn = () => {
-    const googleSignIn = async () => {
-        try {
-            await signInWithPopup(auth, googleProvider);
-            console.log('User Signed In');
-        } catch (err) {
-            console.error(err.message);
-        }
-    };
 
-    return (
-        <Container
-            display="flex"
-            flexDirection="column"
-            justifyContent="center"
-            h="50vh"
-            gap="40px"
-        >
-            <Box>
-                <Heading as="h1" textAlign="center">
-                    Welcome to ChatRooms
-                </Heading>
-                <Text align="center">Progressive chat app for neophytes</Text>
-            </Box>
-            <Box>
-                <Button
-                    leftIcon={<FcGoogle />}
-                    colorScheme="blue"
-                    variant="outline"
-                    w="100%"
-                    onClick={googleSignIn}
-                >
-                    Sign In With Google
-                </Button>
-            </Box>
-        </Container>
-    );
+    const toast = useToast();
+
+  const googleSignIn = async () => {
+    try {
+      const authCred = await signInWithPopup(auth, googleProvider);
+      toast({
+        status: 'success',
+        title: 'Success',
+        description: 'The user was signed in successfully',
+        duration: '5000',
+        isClosable: true,
+        variant: 'left-accent',
+        position: 'top-right'
+      })
+      const isNewUser = getAdditionalUserInfo(authCred).isNewUser;
+
+      if (isNewUser) {
+        await setDoc(doc(db, 'users', `${auth.currentUser.uid}`), {
+          name: auth.currentUser.displayName,
+          createdAt: serverTimestamp(),
+        });
+        console.log('New user created!');
+      }
+    } catch (err) {
+        toast({
+            status: 'error',
+            title: 'Error',
+            description: err.message,
+            duration: '5000',
+            isClosable: true,
+            variant: 'left-accent',
+            position: 'top-right'
+          })
+    }
+  };
+
+  return (
+    <SignInContainer>
+      <WelcomeTitle />
+      <GoogleSignInButton onClick={googleSignIn} />
+    </SignInContainer>
+  );
 };
 export default SignIn;
