@@ -26,7 +26,7 @@ const Home = () => {
       duration: '5000',
       isClosable: true,
     });
-  });
+  }, [disclosure, toast]);
 
   return (
     <SimpleGrid columns={[1, null, 3]}>
