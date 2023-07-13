@@ -1,11 +1,16 @@
 import { Navigate } from 'react-router-dom';
+
+import { useGetUser } from '../context/UserContext';
 import SignIn from '../pages/SignIn';
+import SpinningLoader from '../components/UI/SpinningLoader';
 
-const PrivateRoute = () => {
-    let profile = false;
+const PublicRoute = () => {
+  const { user, isLoading } = useGetUser();
 
-    if (profile) return <Navigate to="/" replace />;
+  if (isLoading) return <SpinningLoader />;
 
-    return <SignIn />;
+  if (user) return <Navigate to={'/'} />;
+
+  return <SignIn />;
 };
-export default PrivateRoute;
+export default PublicRoute;
