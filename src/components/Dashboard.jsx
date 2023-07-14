@@ -5,12 +5,14 @@ import {
   DrawerCloseButton,
   DrawerContent,
   DrawerBody,
-  Heading,
   DrawerFooter,
   Button,
+  Text,
+  Divider,
 } from '@chakra-ui/react';
 import { MdLogout } from 'react-icons/md';
 import { useGetUser } from '../context/UserContext';
+import MutableInput from './UI/MutableInput';
 
 const Dashboard = ({ disclosure, finalFocusRef, onSignOut }) => {
   const { user } = useGetUser();
@@ -27,9 +29,12 @@ const Dashboard = ({ disclosure, finalFocusRef, onSignOut }) => {
       <DrawerOverlay />
       <DrawerContent>
         <DrawerCloseButton />
-        <DrawerHeader>Dashboard</DrawerHeader>
+        <DrawerHeader>
+          <Text>Dashboard</Text>
+        </DrawerHeader>
         <DrawerBody>
-          <Heading size={'lg'}>Hey {user.name}</Heading>
+          <Divider mb={5} />
+          <MutableInput name={user.name} />
         </DrawerBody>
         <DrawerFooter>
           <Button
