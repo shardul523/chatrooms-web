@@ -12,6 +12,7 @@ import {
 } from '@chakra-ui/react';
 import { MdLogout } from 'react-icons/md';
 import { useGetUser } from '../context/UserContext';
+import UploadAvatar from './UI/UploadAvatar';
 import MutableInput from './UI/MutableInput';
 
 const Dashboard = ({ disclosure, finalFocusRef, onSignOut }) => {
@@ -35,6 +36,7 @@ const Dashboard = ({ disclosure, finalFocusRef, onSignOut }) => {
         <DrawerBody>
           <Divider mb={5} />
           <MutableInput name={user.name} />
+          <UploadAvatar />
         </DrawerBody>
         <DrawerFooter>
           <Button
