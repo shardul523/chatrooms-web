@@ -43,7 +43,6 @@ const UploadAvatar = () => {
 
   const onFileUpload = e => {
     const currFile = e.target.files[0];
-    console.log(currFile);
 
     if (!isValidFile(currFile)) {
       toast({ status: 'error', title: 'File Upload Unsuccessful' });
@@ -76,13 +75,13 @@ const UploadAvatar = () => {
           avatarImage: downloadUrl,
         },
         { merge: true },
-
-        toast({ status: 'success', title: 'Avatar set successfully' }),
       );
+      setIsUploading(false);
+      toast({ status: 'success', title: 'Avatar set successfully' });
+      onClose();
     } catch (err) {
       toast({ status: 'success', title: err.message });
-    } finally {
-      setIsUploading(true);
+      setIsUploading(false);
     }
   };
 
@@ -132,7 +131,8 @@ const UploadAvatar = () => {
               leftIcon={<PiUploadSimpleLight />}
               variant={'outline'}
               onClick={onClickUpload}
-              disabled={isUploading}
+              isLoading={isUploading}
+              loadingText="Setting"
             >
               Set New Avatar
             </Button>

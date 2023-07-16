@@ -9,6 +9,9 @@ import {
   Button,
   Text,
   Divider,
+  Avatar,
+  Wrap,
+  WrapItem,
 } from '@chakra-ui/react';
 import { MdLogout } from 'react-icons/md';
 import { useGetUser } from '../context/UserContext';
@@ -31,7 +34,14 @@ const Dashboard = ({ disclosure, finalFocusRef, onSignOut }) => {
       <DrawerContent>
         <DrawerCloseButton />
         <DrawerHeader>
-          <Text>Dashboard</Text>
+          <Wrap align={'center'} spacing={'4'} w={'100%'}>
+            <WrapItem>
+              <Avatar src={user.avatarImage} name={user.name} size={'lg'} />
+            </WrapItem>
+            <WrapItem>
+              <Text>{user.name}</Text>
+            </WrapItem>
+          </Wrap>
         </DrawerHeader>
         <DrawerBody>
           <Divider mb={5} />
