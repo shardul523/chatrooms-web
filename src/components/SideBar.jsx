@@ -1,20 +1,23 @@
-import { Box, Button } from '@chakra-ui/react';
+import { Box, Button, Flex } from '@chakra-ui/react';
 import { RxDashboard } from 'react-icons/rx';
+import { IoMdCreate } from 'react-icons/io';
 
 const SideBar = ({ disclosure, btnRef }) => {
   return (
-    <Box>
+    <Flex flexDir={'column'} gap={2} m={2}>
       <Button
         leftIcon={<RxDashboard />}
         colorScheme="purple"
         w={'100%'}
-        rounded={0}
         onClick={() => disclosure.onOpen()}
         ref={btnRef}
       >
         Dashboard
       </Button>
-    </Box>
+      <Button leftIcon={<IoMdCreate />} colorScheme="whatsapp" w={'100%'}>
+        Create New Chatroom
+      </Button>
+    </Flex>
   );
 };
 export default SideBar;

@@ -29,18 +29,19 @@ const Home = () => {
   }, [disclosure, toast]);
 
   return (
-    <SimpleGrid columns={[1, null, 3]}>
-      <GridItem>
-        <SideBar disclosure={disclosure} btnRef={dashboardBtnRef} />
-      </GridItem>
-      <GridItem colSpan={2}>
-        <Dashboard
-          disclosure={disclosure}
-          finalFocusRef={dashboardBtnRef}
-          onSignOut={onSignOut}
-        />
-      </GridItem>
-    </SimpleGrid>
+    <>
+      <Dashboard
+        disclosure={disclosure}
+        finalFocusRef={dashboardBtnRef}
+        onSignOut={onSignOut}
+      />
+      <SimpleGrid columns={[1, 1, 2, 3]}>
+        <GridItem>
+          <SideBar disclosure={disclosure} btnRef={dashboardBtnRef} />
+        </GridItem>
+        <GridItem colSpan={{ md: 2, lg: 3 }}></GridItem>
+      </SimpleGrid>
+    </>
   );
 };
 export default Home;
