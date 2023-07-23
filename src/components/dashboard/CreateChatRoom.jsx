@@ -16,10 +16,18 @@ import {
 } from '@chakra-ui/react';
 import { IoMdCreate } from 'react-icons/io';
 import { useState } from 'react';
-import { serverTimestamp, doc, setDoc } from 'firebase/firestore';
+import {
+  serverTimestamp,
+  doc,
+  updateDoc,
+  collection,
+  addDoc,
+  arrayUnion,
+} from 'firebase/firestore';
 
 import { chatroomSchema } from '../../validations';
-import { db } from '../../config/firebase';
+import { auth, db } from '../../config/firebase';
+import { useAlert } from '../../hooks';
 
 const INITIAL_FORM_DATA = { title: '', description: '' };
 
@@ -28,22 +36,41 @@ const CreateChatRoom = () => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [isCreating, setIsCreating] = useState(false);
+  const alert = useAlert();
 
-  //   const onCreate = async () => {
-  //     const formData = { title, description };
+  const onRoomCreate = async () => {
+    const formData = { title, description };
 
-  //     if (!chatroomSchema.isValidSync(formData)) return;
+    if (!chatroomSchema.isValidSync(formData))
+      throw new Error('Invalid form data');
 
-  //     setIsCreating(true);
+    setIsCreating(true);
 
-  //     const newRoomData = {...formData, createdAt: serverTimestamp()}
+    const newRoomData = {
+      ...formData,
+      createdAt: serverTimestamp(),
+      createdBy: auth.currentUser.uid,
+    };
 
-  //     try {
-  //         doc(db, 'rooms', '')
-  //     }
+    try {
+      const roomsCollectionRef = collection(db, 'rooms');
+      const newRoomRef = await addDoc(roomsCollectionRef, newRoomData);
+      const currentUserRef = doc(db, 'users', auth.currentUser.uid);
+      await updateDoc(currentUserRef, {
+        rooms: arrayUnion(newRoomRef.id),
+      });
 
-  //     setIsCreating(false);
-  //   };
+      setTitle(INITIAL_FORM_DATA.title);
+      setDescription(INITIAL_FORM_DATA.description);
+
+      alert({ title: 'New ChatRoom created successfully', status: 'success' });
+    } catch (err) {
+      alert({ title: err.message, status: 'error' });
+    } finally {
+      setIsCreating(false);
+      onClose();
+    }
+  };
 
   return (
     <>
@@ -88,6 +115,7 @@ const CreateChatRoom = () => {
               variant={'outline'}
               w={'100%'}
               //   onClick={onCreate}
+              onClick={onRoomCreate}
               isLoading={isCreating}
               loadingText="Creating"
             >

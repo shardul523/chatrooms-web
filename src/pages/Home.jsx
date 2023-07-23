@@ -7,13 +7,16 @@ import {
 import { signOut } from 'firebase/auth';
 import { auth } from '../config/firebase';
 import Dashboard from '../components/Dashboard';
-import SideBar from '../components/SideBar';
-import { useCallback, useRef } from 'react';
+import TopSideBar from '../components/TopSideBar';
+import RoomsList from '../components/rooms/RoomsList';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 const Home = () => {
   const toast = useToast();
+  const [roomListHeight, setRoomListHeight] = useState(0);
   const disclosure = useDisclosure();
   const dashboardBtnRef = useRef();
+  const topSideBarRef = useRef();
   const onSignOut = useCallback(() => {
     signOut(auth);
     disclosure.onClose();
@@ -28,6 +31,11 @@ const Home = () => {
     });
   }, [disclosure, toast]);
 
+  useEffect(() => {
+    const topSideBarHeight = topSideBarRef.current?.scrollHeight;
+    setRoomListHeight(`calc(100vh - ${topSideBarHeight + 16}px)`);
+  }, [topSideBarRef]);
+
   return (
     <>
       <Dashboard
@@ -35,9 +43,14 @@ const Home = () => {
         finalFocusRef={dashboardBtnRef}
         onSignOut={onSignOut}
       />
-      <SimpleGrid columns={[1, 1, 2, 3]}>
+      <SimpleGrid columns={[1, 1, 1, 3]} maxH={'100vh'} overflow={'hidden'}>
         <GridItem>
-          <SideBar disclosure={disclosure} btnRef={dashboardBtnRef} />
+          <TopSideBar
+            disclosure={disclosure}
+            btnRef={dashboardBtnRef}
+            barRef={topSideBarRef}
+          />
+          <RoomsList height={roomListHeight} />
         </GridItem>
         <GridItem colSpan={{ md: 2, lg: 3 }}></GridItem>
       </SimpleGrid>
