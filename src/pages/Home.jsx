@@ -3,6 +3,7 @@ import {
   GridItem,
   useDisclosure,
   useToast,
+  Divider,
 } from '@chakra-ui/react';
 import { signOut } from 'firebase/auth';
 import { auth } from '../config/firebase';
@@ -43,7 +44,7 @@ const Home = () => {
         finalFocusRef={dashboardBtnRef}
         onSignOut={onSignOut}
       />
-      <SimpleGrid columns={[1, 1, 1, 3]} maxH={'100vh'} overflow={'hidden'}>
+      <SimpleGrid columns={[1, 1, 4, 4]} maxH={'100vh'} overflow={'hidden'}>
         <GridItem>
           <TopSideBar
             disclosure={disclosure}
@@ -52,7 +53,8 @@ const Home = () => {
           />
           <RoomsList height={roomListHeight} />
         </GridItem>
-        <GridItem colSpan={{ md: 2, lg: 3 }}></GridItem>
+        <Divider orientation="vertical" />
+        <GridItem colSpan={{ md: 3 }}></GridItem>
       </SimpleGrid>
     </>
   );
