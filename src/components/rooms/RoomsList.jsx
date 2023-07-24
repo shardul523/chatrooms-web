@@ -1,4 +1,4 @@
-import { Box, Flex, Divider, Spinner, Link, VStack } from '@chakra-ui/react';
+import { Box, Flex, Divider, Spinner, Link } from '@chakra-ui/react';
 import { getDocs, collection, where, query } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
 import { Link as RouterLink, useLocation } from 'react-router-dom';
