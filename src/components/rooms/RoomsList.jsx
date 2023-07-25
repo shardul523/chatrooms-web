@@ -26,6 +26,10 @@ const RoomsList = ({ height }) => {
 
   useEffect(() => {
     const setSnapData = async () => {
+      if (!user.rooms) {
+        setRoomsData([]);
+        return;
+      }
       const snapData = await getRoomsData(user.rooms);
       setRoomsData(snapData);
     };

@@ -1,8 +1,14 @@
-import {Box} from '@chakra-ui/react'
+import { Route, Routes } from 'react-router-dom';
+import ChatPage from './ChatPage';
+import EmptyChatPage from './EmptyChatPage';
 
+const Chat = ({ isDesktop }) => {
+  return (
+    <Routes>
+      <Route path="/chat/:chatId" element={<ChatPage />} />
+      {isDesktop && <Route path="*" element={<EmptyChatPage />} />}
+    </Routes>
+  );
+};
 
-export const ChatPage = () => {
-    return (
-        <Box>ChatPage</Box>
-    )
-}
+export default Chat;

@@ -2,21 +2,21 @@ import {
   SimpleGrid,
   GridItem,
   useDisclosure,
-  useToast,
   useBreakpointValue,
 } from '@chakra-ui/react';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { Route, Routes, useMatch } from 'react-router-dom';
+import { useMatch } from 'react-router-dom';
 
 import { signOut } from 'firebase/auth';
 import { auth } from '../config/firebase';
 import Dashboard from '../components/Dashboard';
 import TopSideBar from '../components/TopSideBar';
 import RoomsList from '../components/rooms/RoomsList';
-import { ChatPage } from '../components/chat';
+import Chat from '../components/chat';
+import { useAlert } from '../hooks';
 
 const Home = () => {
-  const toast = useToast();
+  const toast = useAlert();
   const [roomListHeight, setRoomListHeight] = useState(0);
   const disclosure = useDisclosure();
   const dashboardBtnRef = useRef();
@@ -26,17 +26,14 @@ const Home = () => {
     disclosure.onClose();
     toast({
       status: 'info',
-      variant: 'left-accent',
-      position: 'top-right',
       title: 'Signed Out',
       description: 'The user was signed out successfully',
-      duration: '5000',
-      isClosable: true,
     });
   }, [disclosure, toast]);
 
   const match = useMatch('/chat/:chatId');
-  const renderSideBar = useBreakpointValue({ base: false, md: true }) || !match;
+  const isDesktop = useBreakpointValue({ base: false, md: true });
+  const canRenderSideBar = isDesktop || !match;
 
   useEffect(() => {
     const topSideBarHeight = topSideBarRef.current?.scrollHeight;
@@ -51,7 +48,7 @@ const Home = () => {
         onSignOut={onSignOut}
       />
       <SimpleGrid columns={[1, 1, 3]} maxH={'100vh'}>
-        {renderSideBar && (
+        {canRenderSideBar && (
           <GridItem>
             <TopSideBar
               disclosure={disclosure}
@@ -61,10 +58,8 @@ const Home = () => {
             <RoomsList height={roomListHeight} />
           </GridItem>
         )}
-        <GridItem>
-          <Routes>
-            <Route path="/chat/:chatId" element={<ChatPage />} />
-          </Routes>
+        <GridItem colSpan={{ md: 2 }}>
+          <Chat isDesktop={isDesktop} />
         </GridItem>
       </SimpleGrid>
     </>
