@@ -23,7 +23,6 @@ const RoomsList = ({ height }) => {
   const { user } = useGetUser();
   const [roomsData, setRoomsData] = useState(null);
   const location = useLocation();
-  console.log(location.pathname);
 
   useEffect(() => {
     const setSnapData = async () => {
@@ -38,10 +37,22 @@ const RoomsList = ({ height }) => {
 
   if (roomsData)
     return (
-      <Box h={height} as="nav">
+      <Box
+        h={height}
+        as="nav"
+        overflowY={'scroll'}
+        sx={{
+          '&::-webkit-scrollbar': {
+            width: '7.5px',
+          },
+          '&::-webkit-scrollbar-thumb': {
+            background: '#888',
+            borderRadius: '10px',
+          },
+        }}
+      >
         {roomsData.map((roomData, index) => {
           const isActive = `/chat/${roomData.id}` === location.pathname;
-          console.log(roomData, isActive);
           return (
             <Link
               as={RouterLink}

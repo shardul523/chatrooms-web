@@ -38,7 +38,8 @@ const CreateChatRoom = () => {
   const [isCreating, setIsCreating] = useState(false);
   const alert = useAlert();
 
-  const onRoomCreate = async () => {
+  const onRoomCreate = async e => {
+    e?.preventDefault();
     const formData = { title, description };
 
     if (!chatroomSchema.isValidSync(formData))
@@ -90,7 +91,7 @@ const CreateChatRoom = () => {
             <Text>Create New Chatroom</Text>
           </ModalHeader>
           <ModalBody>
-            <FormControl as={'form'}>
+            <FormControl as={'form'} onSubmit={onRoomCreate}>
               <FormLabel htmlFor="title">Title</FormLabel>
               <Input
                 id="title"

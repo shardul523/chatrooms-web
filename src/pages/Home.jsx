@@ -3,14 +3,17 @@ import {
   GridItem,
   useDisclosure,
   useToast,
-  Divider,
+  useBreakpointValue,
 } from '@chakra-ui/react';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { Route, Routes, useMatch } from 'react-router-dom';
+
 import { signOut } from 'firebase/auth';
 import { auth } from '../config/firebase';
 import Dashboard from '../components/Dashboard';
 import TopSideBar from '../components/TopSideBar';
 import RoomsList from '../components/rooms/RoomsList';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { ChatPage } from '../components/chat';
 
 const Home = () => {
   const toast = useToast();
@@ -32,6 +35,9 @@ const Home = () => {
     });
   }, [disclosure, toast]);
 
+  const match = useMatch('/chat/:chatId');
+  const renderSideBar = useBreakpointValue({ base: false, md: true }) || !match;
+
   useEffect(() => {
     const topSideBarHeight = topSideBarRef.current?.scrollHeight;
     setRoomListHeight(`calc(100vh - ${topSideBarHeight + 16}px)`);
@@ -44,17 +50,22 @@ const Home = () => {
         finalFocusRef={dashboardBtnRef}
         onSignOut={onSignOut}
       />
-      <SimpleGrid columns={[1, 1, 4, 4]} maxH={'100vh'} overflow={'hidden'}>
+      <SimpleGrid columns={[1, 1, 3]} maxH={'100vh'}>
+        {renderSideBar && (
+          <GridItem>
+            <TopSideBar
+              disclosure={disclosure}
+              btnRef={dashboardBtnRef}
+              barRef={topSideBarRef}
+            />
+            <RoomsList height={roomListHeight} />
+          </GridItem>
+        )}
         <GridItem>
-          <TopSideBar
-            disclosure={disclosure}
-            btnRef={dashboardBtnRef}
-            barRef={topSideBarRef}
-          />
-          <RoomsList height={roomListHeight} />
+          <Routes>
+            <Route path="/chat/:chatId" element={<ChatPage />} />
+          </Routes>
         </GridItem>
-        <Divider orientation="vertical" />
-        <GridItem colSpan={{ md: 3 }}></GridItem>
       </SimpleGrid>
     </>
   );

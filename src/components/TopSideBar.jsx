@@ -18,7 +18,9 @@ const TopSideBar = ({ disclosure, btnRef, barRef }) => {
       <CreateChatRoom />
       <Box position="relative" py={10}>
         <Divider color={'black'} opacity={0.8} />
-        <AbsoluteCenter px="5">Join Conversation</AbsoluteCenter>
+        <AbsoluteCenter px="5" bg={'white'}>
+          Join Conversation
+        </AbsoluteCenter>
       </Box>
     </Flex>
   );
