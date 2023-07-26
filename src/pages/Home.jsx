@@ -14,6 +14,7 @@ import TopSideBar from '../components/TopSideBar';
 import RoomsList from '../components/rooms/RoomsList';
 import Chat from '../components/chat';
 import { useAlert } from '../hooks';
+import { useRooms } from '../context/RoomsContext';
 
 const Home = () => {
   const toast = useAlert();
@@ -34,6 +35,9 @@ const Home = () => {
   const match = useMatch('/chat/:chatId');
   const isDesktop = useBreakpointValue({ base: false, md: true });
   const canRenderSideBar = isDesktop || !match;
+
+  const { rooms } = useRooms();
+  console.log(rooms);
 
   useEffect(() => {
     const topSideBarHeight = topSideBarRef.current?.scrollHeight;
