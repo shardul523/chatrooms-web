@@ -15,35 +15,18 @@ import {
   useDisclosure,
   InputGroup,
   InputRightAddon,
-  InputRightElement,
-  Icon,
+  Flex,
 } from '@chakra-ui/react';
 import { IoMdCreate } from 'react-icons/io';
 import { useRef, useState } from 'react';
-import {
-  serverTimestamp,
-  doc,
-  updateDoc,
-  getDocs,
-  collection,
-  addDoc,
-  arrayUnion,
-  query,
-  where,
-} from 'firebase/firestore';
+import { serverTimestamp } from 'firebase/firestore';
 import { AiOutlineCheck } from 'react-icons/ai';
+import { RxCross2 } from 'react-icons/rx';
 
 import { chatroomSchema } from '../../validations';
-import { auth, db } from '../../config/firebase';
 import { useAlert } from '../../hooks';
-
-const isJoinIdAvailable = async id => {
-  const roomsCollection = collection(db, 'rooms');
-  const joinIdQuery = query(roomsCollection, where('joinId', '==', id));
-  const roomsWithJoinId = await getDocs(joinIdQuery);
-
-  return roomsWithJoinId.empty;
-};
+import { roomsWithJoinId, addNewRoom } from '../../utility';
+import { useGetUser } from '../../context/UserContext';
 
 // const INITIAL_FORM_DATA = { title: '', description: '' };
 
@@ -55,10 +38,20 @@ const CreateChatRoom = () => {
   const [isChecking, setIsChecking] = useState(false);
   const [isAvailable, setIsAvailable] = useState(null);
   const alert = useAlert();
+  const { user } = useGetUser();
 
   const titleInputRef = useRef();
   const descriptionInputRef = useRef();
   const joinIdInputRef = useRef();
+
+  const closeModal = () => {
+    setIsAvailable(null);
+    titleInputRef.current.value =
+      descriptionInputRef.current.value =
+      joinIdInputRef.current.value =
+        '';
+    onClose();
+  };
 
   const onRoomCreate = async e => {
     e?.preventDefault();
@@ -79,29 +72,30 @@ const CreateChatRoom = () => {
         ...formData,
         createdAt: serverTimestamp(),
         updatedAt: serverTimestamp(),
-        admins: [auth.currentUser.uid],
+        admins: [user.uid],
+        members: [user.uid],
       };
 
-      const roomsCollectionRef = collection(db, 'rooms');
-      const newRoomRef = await addDoc(roomsCollectionRef, newRoomData);
-      const currentUserRef = doc(db, 'users', auth.currentUser.uid);
-      await updateDoc(currentUserRef, {
-        rooms: arrayUnion(newRoomRef.id),
-      });
+      // const roomsCollectionRef = collection(db, 'rooms');
+      // const newRoomRef = await addDoc(roomsCollectionRef, newRoomData);
+      // const currentUserRef = doc(db, 'users', auth.currentUser.uid);
+      // await updateDoc(currentUserRef, {
+      //   rooms: arrayUnion(newRoomRef.id),
+      // });
+
+      await addNewRoom(user.uid, newRoomData);
+
+      closeModal();
 
       // setTitle(INITIAL_FORM_DATA.title);
       // setDescription(INITIAL_FORM_DATA.description);
-
-      titleInputRef.current.value =
-        descriptionInputRef.current.value =
-        joinIdInputRef.current.value =
-          '';
 
       alert({ title: 'New ChatRoom created successfully', status: 'success' });
     } catch (err) {
       alert({ title: err.message, status: 'error' });
     } finally {
       setIsCreating(false);
+      setIsAvailable(null);
       onClose();
     }
   };
@@ -109,22 +103,22 @@ const CreateChatRoom = () => {
   const checkAvailable = async () => {
     setIsChecking(true);
     const joinId = joinIdInputRef.current.value;
-    const res = await isJoinIdAvailable(joinId);
-    setIsAvailable(res);
+    const res = await roomsWithJoinId(joinId);
+    setIsAvailable(res.empty);
     setIsChecking(false);
   };
 
   return (
     <>
       <Button
+        w={'45%'}
         leftIcon={<IoMdCreate />}
         colorScheme="pink"
-        w={'100%'}
         onClick={onOpen}
       >
-        Create New Chatroom
+        New Chatroom
       </Button>
-      <Modal isOpen={isOpen} size={'lg'} onClose={onClose}>
+      <Modal isOpen={isOpen} size={'lg'} onClose={closeModal}>
         <ModalOverlay />
         <ModalContent>
           <ModalCloseButton />
@@ -157,15 +151,21 @@ const CreateChatRoom = () => {
                     isLoading={isChecking}
                     loadingText="Checking"
                   >
-                    {isAvailable && <AiOutlineCheck color="white" />}
-                    {isAvailable === null
-                      ? 'Check'
-                      : isAvailable
-                      ? 'Available'
-                      : 'Not available'}
+                    Check
                   </Button>
                 </InputRightAddon>
               </InputGroup>
+              {isAvailable && (
+                <Flex color={'whatsapp.500'} align={'center'}>
+                  <AiOutlineCheck /> Available
+                </Flex>
+              )}
+              {isAvailable === false && (
+                <Flex color={'red.500'} align={'center'}>
+                  <RxCross2 /> Not Available
+                </Flex>
+              )}
+
               <FormLabel htmlFor="description">Description</FormLabel>
               <Textarea
                 rows={5}
@@ -184,6 +184,7 @@ const CreateChatRoom = () => {
               onClick={onRoomCreate}
               isLoading={isCreating}
               loadingText="Creating"
+              isDisabled={!isAvailable}
             >
               Create
             </Button>

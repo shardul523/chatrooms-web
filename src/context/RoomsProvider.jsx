@@ -13,7 +13,11 @@ const RoomsProvider = ({ children }) => {
   useEffect(() => {
     const userRooms = user?.rooms || [];
 
-    if (userRooms.length === 0) return;
+    if (userRooms.length === 0) {
+      setRooms(userRooms);
+      setIsLoading(false);
+      return;
+    }
 
     const userRoomsQuery = query(
       collection(db, 'rooms'),

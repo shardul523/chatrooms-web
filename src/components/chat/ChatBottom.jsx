@@ -4,7 +4,8 @@ import {
   updateDoc,
   doc,
   serverTimestamp,
-  arrayUnion,
+  addDoc,
+  collection,
 } from 'firebase/firestore';
 import { useRef } from 'react';
 
@@ -24,9 +25,19 @@ const ChatBottom = ({ roomId }) => {
       sentAt: new Date(),
     };
 
+    // await updateDoc(doc(db, 'rooms', roomId), {
+    //   updatedAt: serverTimestamp(),
+    //   messages: arrayUnion(newChat),
+    // });
+
+    const newChatRef = await addDoc(
+      collection(db, 'rooms', roomId, 'messages'),
+      newChat,
+    );
+
     await updateDoc(doc(db, 'rooms', roomId), {
       updatedAt: serverTimestamp(),
-      messages: arrayUnion(newChat),
+      lastMessage: newChatRef,
     });
 
     chatInputRef.current.innerText = '';
