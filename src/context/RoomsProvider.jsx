@@ -29,7 +29,7 @@ const RoomsProvider = ({ children }) => {
       });
 
       setRooms(roomsData);
-      setIsLoading(true);
+      setIsLoading(false);
     });
 
     return () => roomsDocsUnsub();

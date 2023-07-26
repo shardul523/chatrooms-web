@@ -50,7 +50,8 @@ const CreateChatRoom = () => {
     const newRoomData = {
       ...formData,
       createdAt: serverTimestamp(),
-      createdBy: auth.currentUser.uid,
+      updatedAt: serverTimestamp(),
+      admins: [auth.currentUser.uid],
     };
 
     try {

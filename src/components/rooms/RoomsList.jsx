@@ -1,76 +1,28 @@
-import { Box, Flex, Divider, Spinner, Link } from '@chakra-ui/react';
-import { getDocs, collection, where, query } from 'firebase/firestore';
-import { useEffect, useState } from 'react';
-import { Link as RouterLink, useLocation } from 'react-router-dom';
+import { Flex, Divider, Spinner } from '@chakra-ui/react';
+import { useLocation } from 'react-router-dom';
 
 import RoomsListItem from './RoomsListItem';
-import { useGetUser } from '../../context/UserContext';
-import { db } from '../../config/firebase';
-
-const getRoomsData = async rooms => {
-  const snapData = [];
-  const getRoomsQuery = query(
-    collection(db, 'rooms'),
-    where('__name__', 'in', rooms),
-  );
-  const getRoomsQuerySnapshot = await getDocs(getRoomsQuery);
-  getRoomsQuerySnapshot.forEach(doc => snapData.push(doc));
-
-  return snapData;
-};
+import ListContainer from '../UI/ListContainer';
+import { useRooms } from '../../context/RoomsContext';
+import Anchor from '../Anchor';
 
 const RoomsList = ({ height }) => {
-  const { user } = useGetUser();
-  const [roomsData, setRoomsData] = useState(null);
   const location = useLocation();
+  const { rooms, isLoading } = useRooms();
 
-  useEffect(() => {
-    const setSnapData = async () => {
-      if (!user.rooms) {
-        setRoomsData([]);
-        return;
-      }
-      const snapData = await getRoomsData(user.rooms);
-      setRoomsData(snapData);
-    };
-
-    setSnapData();
-  }, [user]);
-
-  //console.log(roomsData);
-
-  if (roomsData)
+  if (!isLoading)
     return (
-      <Box
-        h={height}
-        as="nav"
-        overflowY={'scroll'}
-        sx={{
-          '&::-webkit-scrollbar': {
-            width: '7.5px',
-          },
-          '&::-webkit-scrollbar-thumb': {
-            background: '#888',
-            borderRadius: '10px',
-          },
-        }}
-      >
-        {roomsData.map((roomData, index) => {
-          const isActive = `/chat/${roomData.id}` === location.pathname;
+      <ListContainer height={height}>
+        {rooms.map((roomData, index) => {
+          const isActive = `/chat/${roomData.roomId}` === location.pathname;
           return (
-            <Link
-              as={RouterLink}
-              to={`/chat/${roomData.id}`}
-              key={index}
-              cursor={'pointer'}
-              _hover={{ textDecor: 'none' }}
-            >
-              <RoomsListItem data={roomData.data()} active={isActive} />
+            <Anchor to={`/chat/${roomData.roomId}`} key={index}>
+              <RoomsListItem data={roomData} active={isActive} />
               <Divider />
-            </Link>
+            </Anchor>
           );
         })}
-      </Box>
+      </ListContainer>
     );
 
   return (
