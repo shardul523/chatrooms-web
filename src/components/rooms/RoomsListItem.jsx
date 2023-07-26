@@ -1,10 +1,22 @@
 import { Flex, Heading, Text } from '@chakra-ui/react';
 import TimeAgo from 'timeago-react';
+import { useEffect, useState } from 'react';
+import { getDoc } from 'firebase/firestore';
 
 const RoomsListItem = ({ data, active }) => {
   const { title, createdAt } = data;
-  // console.log(createdAt)
-  // console.log(data)
+  const [lastMessage, setLastMessage] = useState('No messages yet...');
+  console.log(lastMessage);
+
+  useEffect(() => {
+    const getMessage = async () => {
+      const lastMessageSnap = await getDoc(data.lastMessageRef);
+      if (!lastMessageSnap) return;
+      setLastMessage(lastMessageSnap.data().messageText);
+    };
+
+    getMessage();
+  }, [data]);
 
   return (
     <Flex
@@ -17,13 +29,20 @@ const RoomsListItem = ({ data, active }) => {
       bg={active && 'purple.50'}
     >
       <Flex justifyContent={'space-between'} align={'center'}>
-        <Heading as={'h3'} fontSize={'1.25rem'}>
+        <Heading
+          as={'h3'}
+          fontSize={'1.25rem'}
+          fontWeight={'normal'}
+          color={active && 'purple.800'}
+        >
           {title}
         </Heading>
-        <TimeAgo datetime={createdAt.toDate()} />
+        <Text color={'blackAlpha.500'}>
+          <TimeAgo datetime={createdAt.toDate()} />
+        </Text>
       </Flex>
       <Flex align={'center'}>
-        <Text>No messages yet...</Text>
+        <Text color={'blackAlpha.500'}>{lastMessage.slice(0, 30)}</Text>
       </Flex>
     </Flex>
   );

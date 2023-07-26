@@ -11,11 +11,12 @@ const RoomsProvider = ({ children }) => {
   const { user } = useGetUser();
 
   useEffect(() => {
-    const userRooms = user?.rooms || [];
+    if (!user) return;
+    const userRooms = user.rooms || [];
 
-    if (userRooms.length === 0) {
-      setRooms(userRooms);
+    if (user && userRooms.length == 0) {
       setIsLoading(false);
+      setRooms(userRooms);
       return;
     }
 

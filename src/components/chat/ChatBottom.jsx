@@ -1,17 +1,10 @@
 import { Flex, IconButton } from '@chakra-ui/react';
 import { RiSendPlaneFill } from 'react-icons/ri';
-import {
-  updateDoc,
-  doc,
-  serverTimestamp,
-  addDoc,
-  collection,
-} from 'firebase/firestore';
 import { useRef } from 'react';
 
 import ChatInput from './ChatInput';
-import { db } from '../../config/firebase';
 import { useGetUser } from '../../context/UserContext';
+import { addNewChat } from '../../utility';
 
 const ChatBottom = ({ roomId }) => {
   const chatInputRef = useRef();
@@ -20,29 +13,14 @@ const ChatBottom = ({ roomId }) => {
   const sendMessage = async () => {
     const msgText = chatInputRef.current.innerText;
     const newChat = {
-      msgText,
+      messageText: msgText,
       senderId: user.uid,
       sentAt: new Date(),
     };
 
-    // await updateDoc(doc(db, 'rooms', roomId), {
-    //   updatedAt: serverTimestamp(),
-    //   messages: arrayUnion(newChat),
-    // });
-
-    const newChatRef = await addDoc(
-      collection(db, 'rooms', roomId, 'messages'),
-      newChat,
-    );
-
-    await updateDoc(doc(db, 'rooms', roomId), {
-      updatedAt: serverTimestamp(),
-      lastMessage: newChatRef,
-    });
+    addNewChat(roomId, newChat);
 
     chatInputRef.current.innerText = '';
-
-    //console.log(roomId, newChat);
   };
 
   return (

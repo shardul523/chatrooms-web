@@ -7,6 +7,7 @@ import {
   updateDoc,
   arrayUnion,
   addDoc,
+  serverTimestamp,
 } from 'firebase/firestore';
 import { db } from '../config/firebase';
 
@@ -37,5 +38,15 @@ export const addNewRoom = async (creatorId, roomData) => {
   const newRoomRef = await addDoc(roomsCollectionRef, roomData);
   await updateDoc(userDocRef, {
     rooms: arrayUnion(newRoomRef.id),
+  });
+};
+
+export const addNewChat = async (roomId, chatData) => {
+  const roomDocRef = doc(db, 'rooms', roomId);
+  const messagesCollectionRef = collection(db, 'rooms', roomId, 'messages');
+  const newChatRef = await addDoc(messagesCollectionRef, chatData);
+  await updateDoc(roomDocRef, {
+    updatedAt: serverTimestamp(),
+    lastMessageRef: newChatRef,
   });
 };

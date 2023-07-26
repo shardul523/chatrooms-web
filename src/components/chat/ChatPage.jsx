@@ -9,19 +9,13 @@ import { useRooms } from '../../context/RoomsContext';
 const ChatPage = () => {
   const { rooms, isLoading } = useRooms();
   const { chatId } = useParams();
-  const currRoom = rooms?.filter(room => room.roomId === chatId)[0];
 
   if (isLoading) return <SpinningLoader />;
+
+  const currRoom = rooms?.filter(room => room.roomId === chatId)[0];
+  console.log(rooms, currRoom);
   return (
-    <Grid
-      //   templateAreas={`
-      // "top"
-      // "messages"
-      // "bottom"
-      // `}
-      templateRows={'auto 1fr auto'}
-      height={'100vh'}
-    >
+    <Grid templateRows={'auto 1fr auto'} height={'100vh'}>
       <GridItem>
         <ChatTop title={currRoom.title} desc={currRoom.description} />
       </GridItem>
