@@ -60,8 +60,8 @@ const JoinChatRoom = () => {
       </Button>
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
-        <ModalCloseButton />
         <ModalContent>
+          <ModalCloseButton />
           <ModalHeader>Join an Existing ChatRoom</ModalHeader>
           <ModalBody>
             <FormControl>
