@@ -1,25 +1,37 @@
 import { Flex, IconButton } from '@chakra-ui/react';
 import { RiSendPlaneFill } from 'react-icons/ri';
-import { updateDoc, doc, serverTimestamp } from 'firebase/firestore';
+import {
+  updateDoc,
+  doc,
+  serverTimestamp,
+  arrayUnion,
+} from 'firebase/firestore';
 import { useRef } from 'react';
 
 import ChatInput from './ChatInput';
 import { db } from '../../config/firebase';
 import { useGetUser } from '../../context/UserContext';
 
-const ChatBottom = () => {
+const ChatBottom = ({ roomId }) => {
   const chatInputRef = useRef();
   const { user } = useGetUser();
 
-  const sendMessage = () => {
+  const sendMessage = async () => {
     const msgText = chatInputRef.current.innerText;
     const newChat = {
       msgText,
       senderId: user.uid,
-      sentAt: serverTimestamp(),
+      sentAt: new Date(),
     };
 
-    console.log(newChat);
+    await updateDoc(doc(db, 'rooms', roomId), {
+      updatedAt: serverTimestamp(),
+      messages: arrayUnion(newChat),
+    });
+
+    chatInputRef.current.innerText = '';
+
+    //console.log(roomId, newChat);
   };
 
   return (

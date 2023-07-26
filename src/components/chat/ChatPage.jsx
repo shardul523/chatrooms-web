@@ -29,7 +29,7 @@ const ChatPage = () => {
         <ChatMessages />
       </GridItem>
       <GridItem>
-        <ChatBottom />
+        <ChatBottom roomId={currRoom.roomId} />
       </GridItem>
     </Grid>
   );
