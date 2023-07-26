@@ -10,25 +10,28 @@ const RoomsList = ({ height }) => {
   const location = useLocation();
   const { rooms, isLoading } = useRooms();
 
-  if (!isLoading)
+  if (isLoading)
     return (
-      <ListContainer height={height}>
-        {rooms.map((roomData, index) => {
-          const isActive = `/chat/${roomData.roomId}` === location.pathname;
-          return (
-            <Anchor to={`/chat/${roomData.roomId}`} key={index}>
-              <RoomsListItem data={roomData} active={isActive} />
-              <Divider />
-            </Anchor>
-          );
-        })}
-      </ListContainer>
+      <Flex justify={'center'} align={'center'} h={height}>
+        <Spinner color="purple" />
+      </Flex>
     );
 
+  rooms.sort((a, b) => b.updatedAt - a.updatedAt);
+  //console.log(rooms);
+
   return (
-    <Flex justify={'center'} align={'center'} h={height}>
-      <Spinner color="purple" />
-    </Flex>
+    <ListContainer height={height}>
+      {rooms.map((roomData, index) => {
+        const isActive = `/chat/${roomData.roomId}` === location.pathname;
+        return (
+          <Anchor to={`/chat/${roomData.roomId}`} key={index}>
+            <RoomsListItem data={roomData} active={isActive} />
+            <Divider />
+          </Anchor>
+        );
+      })}
+    </ListContainer>
   );
 };
 export default RoomsList;
