@@ -4,7 +4,8 @@ import { useEffect, useState } from 'react';
 import { getDoc } from 'firebase/firestore';
 
 const RoomsListItem = ({ data, active }) => {
-  const { title, createdAt } = data;
+  const [title, setTitle] = useState('Not available');
+  const [updatedAt, setUpdatedAt] = useState(new Date());
   const [lastMessage, setLastMessage] = useState('No messages yet...');
   console.log(lastMessage);
 
@@ -16,6 +17,8 @@ const RoomsListItem = ({ data, active }) => {
     };
 
     getMessage();
+    if (data.title) setTitle(data.title);
+    if (data.updatedAt) setUpdatedAt(data.updatedAt.toDate());
   }, [data]);
 
   return (
@@ -38,11 +41,13 @@ const RoomsListItem = ({ data, active }) => {
           {title}
         </Heading>
         <Text color={'blackAlpha.500'}>
-          <TimeAgo datetime={createdAt.toDate()} />
+          <TimeAgo datetime={updatedAt} />
         </Text>
       </Flex>
       <Flex align={'center'}>
-        <Text color={'blackAlpha.500'}>{lastMessage.slice(0, 30)}</Text>
+        <Text color={'blackAlpha.500'}>{`${lastMessage.slice(0, 50)}${
+          lastMessage.length > 50 ? '.....' : ''
+        }`}</Text>
       </Flex>
     </Flex>
   );

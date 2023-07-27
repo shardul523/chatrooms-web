@@ -25,6 +25,7 @@ const RoomsProvider = ({ children }) => {
       where('__name__', 'in', userRooms),
     );
     const roomsDocsUnsub = onSnapshot(userRoomsQuery, querySnap => {
+      setIsLoading(true);
       const roomsData = [];
       querySnap.forEach(doc => {
         const currRoom = doc.data();

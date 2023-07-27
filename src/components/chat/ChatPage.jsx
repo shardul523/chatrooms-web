@@ -13,14 +13,14 @@ const ChatPage = () => {
   if (isLoading) return <SpinningLoader />;
 
   const currRoom = rooms?.filter(room => room.roomId === chatId)[0];
-  console.log(rooms, currRoom);
+  console.log(currRoom);
   return (
     <Grid templateRows={'auto 1fr auto'} height={'100vh'}>
       <GridItem>
         <ChatTop title={currRoom.title} desc={currRoom.description} />
       </GridItem>
       <GridItem>
-        <ChatMessages />
+        <ChatMessages messages={currRoom.roomId} />
       </GridItem>
       <GridItem>
         <ChatBottom roomId={currRoom.roomId} />

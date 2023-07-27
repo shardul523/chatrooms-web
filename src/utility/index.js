@@ -8,6 +8,7 @@ import {
   arrayUnion,
   addDoc,
   serverTimestamp,
+  getDoc,
 } from 'firebase/firestore';
 import { db } from '../config/firebase';
 
@@ -49,4 +50,17 @@ export const addNewChat = async (roomId, chatData) => {
     updatedAt: serverTimestamp(),
     lastMessageRef: newChatRef,
   });
+};
+
+export const getUser = async userId => {
+  const userDocRef = doc(db, 'users', userId);
+  const userDocSnap = await getDoc(userDocRef);
+
+  return userDocSnap;
+};
+
+export const getRoomMessages = async roomId => {
+  const messagesCollectionRef = collection(db, 'rooms', roomId, 'messages');
+  const allMessagesSnap = await getDocs(messagesCollectionRef);
+  return allMessagesSnap;
 };
