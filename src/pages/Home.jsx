@@ -49,7 +49,7 @@ const Home = () => {
         finalFocusRef={dashboardBtnRef}
         onSignOut={onSignOut}
       />
-      <SimpleGrid columns={[1, 1, 3]} h={'100vh'}>
+      <SimpleGrid columns={[1, 1, 1, 3]} h={'100vh'}>
         {canRenderSideBar && (
           <GridItem maxH={'100%'}>
             <TopSideBar
@@ -60,7 +60,7 @@ const Home = () => {
             <RoomsList height={roomListHeight} />
           </GridItem>
         )}
-        <GridItem colSpan={{ md: 2 }}>
+        <GridItem colSpan={{ lg: 2 }}>
           <Chat isDesktop={isDesktop} />
         </GridItem>
       </SimpleGrid>

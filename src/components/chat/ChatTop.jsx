@@ -7,18 +7,21 @@ const ChatTop = ({ title }) => {
   const navigate = useNavigate();
 
   return (
-    <Card>
+    <Card
+      bg={'purple.500'}
+      color={'white'}
+      roundedTopEnd={0}
+      roundedBottomRight={0}
+    >
       <CardBody>
         <Flex w={'100%'} justify={'space-between'} alignItems={'center'}>
           <Flex justify={'space-between'} alignItems={'center'} gap={10}>
             <IconButton
               size={'lg'}
               icon={<BiArrowBack />}
-              // _hover={{ backgroundColor: 'purple.400' }}
-              // color={'white'}
-              // bg={'purple.600'}
-              bg={'white'}
-              _hover={{ backgroundColor: 'gray.100' }}
+              colorScheme="purple"
+              // bg={'white'}
+              // _hover={{ backgroundColor: 'gray.100' }}
               onClick={() => navigate(-1)}
               rounded={100}
             />
@@ -30,11 +33,9 @@ const ChatTop = ({ title }) => {
           <IconButton
             size={'lg'}
             icon={<BsThreeDotsVertical />}
-            // _hover={{ backgroundColor: 'purple.400' }}
-            // color={'white'}
-            // bg={'purple.600'}
-            bg={'white'}
-            _hover={{ backgroundColor: 'gray.100' }}
+            colorScheme="purple"
+            // bg={'white'}
+            // _hover={{ backgroundColor: 'gray.100' }}
             rounded={100}
           />
         </Flex>

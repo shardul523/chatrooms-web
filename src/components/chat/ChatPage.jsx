@@ -7,6 +7,7 @@ import SpinningLoader from '../UI/SpinningLoader';
 import { useRooms } from '../../context/RoomsContext';
 import { useMessages } from '../../context/MessagesContext';
 import { useEffect, useState } from 'react';
+import ListContainer from '../UI/ListContainer';
 
 const getCurrRoom = (rooms, currId) => {
   let roomNeeded = null;
@@ -39,11 +40,11 @@ const ChatPage = () => {
   //console.log(currRoom, currRoomMessages);
 
   return (
-    <Grid templateRows={'auto 1fr auto'} height={'100vh'}>
+    <Grid templateRows={'auto 1fr auto'} height={'100vh'} gap={0}>
       <GridItem>
         <ChatTop title={currRoom.title} desc={currRoom.description} />
       </GridItem>
-      <GridItem>
+      <GridItem overflowY={'auto'} bg={'purple.50'}>
         <ChatMessages messages={currRoomMessages} />
       </GridItem>
       <GridItem>

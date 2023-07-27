@@ -1,4 +1,4 @@
-import { Flex, IconButton } from '@chakra-ui/react';
+import { Card, CardBody, Flex, IconButton } from '@chakra-ui/react';
 import { RiSendPlaneFill } from 'react-icons/ri';
 import { useRef } from 'react';
 
@@ -25,16 +25,20 @@ const ChatBottom = ({ roomId }) => {
   };
 
   return (
-    <Flex justify={'center'} gap={10} py={5}>
-      <ChatInput chatRef={chatInputRef} />
-      <IconButton
-        icon={<RiSendPlaneFill />}
-        size={'lg'}
-        rounded={100}
-        colorScheme="purple"
-        onClick={sendMessage}
-      />
-    </Flex>
+    <Card>
+      <CardBody>
+        <Flex justify={'center'} gap={10} py={2}>
+          <ChatInput chatRef={chatInputRef} />
+          <IconButton
+            icon={<RiSendPlaneFill />}
+            size={'lg'}
+            rounded={100}
+            colorScheme="purple"
+            onClick={sendMessage}
+          />
+        </Flex>
+      </CardBody>
+    </Card>
   );
 };
 export default ChatBottom;

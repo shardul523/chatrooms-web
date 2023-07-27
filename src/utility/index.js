@@ -62,7 +62,7 @@ export const getUser = async userId => {
 
 export const getRoomMessagesSnap = async roomId => {
   const messagesCollectionRef = collection(db, 'rooms', roomId, 'messages');
-  const messagesQuery = query(messagesCollectionRef, orderBy('sentAt', 'desc'));
+  const messagesQuery = query(messagesCollectionRef, orderBy('sentAt'));
   const allMessagesSnap = await getDocs(messagesQuery);
   // console.log(allMessagesSnap);
   return allMessagesSnap;

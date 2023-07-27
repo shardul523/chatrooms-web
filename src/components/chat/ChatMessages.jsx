@@ -1,8 +1,13 @@
+import { Box } from '@chakra-ui/react';
 import ChatItem from './ChatItem';
 
 const ChatMessages = ({ messages }) => {
-  return messages.map(message => (
-    <ChatItem key={message.id} message={message} />
-  ));
+  return (
+    <Box>
+      {messages.map(message => (
+        <ChatItem key={message.id} message={message} />
+      ))}
+    </Box>
+  );
 };
 export default ChatMessages;

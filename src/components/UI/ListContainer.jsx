@@ -1,18 +1,21 @@
 import { Box } from '@chakra-ui/react';
 
-const ListContainer = ({ height, children }) => {
+const ListContainer = ({ height, children, bg }) => {
   return (
     <Box
       h={height}
-      as="nav"
-      overflowY={'scroll'}
+      overflowY={'auto'}
+      overflowX={'hidden'}
       sx={{
-        '&::-webkit-scrollbar': {
+        '&::-webkit-scrollbar:horizontal': {
           width: '7.5px',
         },
         '&::-webkit-scrollbar-thumb': {
           background: '#888',
           borderRadius: '10px',
+        },
+        '&::-webkit-scrollbar-track-piece': {
+          background: { bg },
         },
       }}
     >
