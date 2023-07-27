@@ -9,6 +9,7 @@ import {
   addDoc,
   serverTimestamp,
   getDoc,
+  orderBy,
 } from 'firebase/firestore';
 import { db } from '../config/firebase';
 
@@ -61,6 +62,13 @@ export const getUser = async userId => {
 
 export const getRoomMessages = async roomId => {
   const messagesCollectionRef = collection(db, 'rooms', roomId, 'messages');
-  const allMessagesSnap = await getDocs(messagesCollectionRef);
+  const messagesQuery = query(messagesCollectionRef, orderBy('sentAt', 'desc'));
+  const allMessagesSnap = await getDocs(messagesQuery);
   return allMessagesSnap;
+};
+
+export const getDataFromSnap = snap => {
+  const data = snap.data();
+  data.id = snap.id;
+  return data;
 };

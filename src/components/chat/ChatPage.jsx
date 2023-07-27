@@ -7,10 +7,10 @@ import SpinningLoader from '../UI/SpinningLoader';
 import { useRooms } from '../../context/RoomsContext';
 
 const ChatPage = () => {
-  const { rooms, isLoading } = useRooms();
+  const { rooms, isRoomsLoading } = useRooms();
   const { chatId } = useParams();
 
-  if (isLoading) return <SpinningLoader />;
+  if (isRoomsLoading) return <SpinningLoader />;
 
   const currRoom = rooms?.filter(room => room.roomId === chatId)[0];
   console.log(currRoom);

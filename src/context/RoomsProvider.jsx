@@ -7,7 +7,7 @@ import { useGetUser } from './UserContext';
 
 const RoomsProvider = ({ children }) => {
   const [rooms, setRooms] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isRoomsLoading, setisRoomsLoading] = useState(true);
   const { user } = useGetUser();
 
   useEffect(() => {
@@ -15,7 +15,7 @@ const RoomsProvider = ({ children }) => {
     const userRooms = user.rooms || [];
 
     if (user && userRooms.length == 0) {
-      setIsLoading(false);
+      setisRoomsLoading(false);
       setRooms(userRooms);
       return;
     }
@@ -25,7 +25,7 @@ const RoomsProvider = ({ children }) => {
       where('__name__', 'in', userRooms),
     );
     const roomsDocsUnsub = onSnapshot(userRoomsQuery, querySnap => {
-      setIsLoading(true);
+      setisRoomsLoading(true);
       const roomsData = [];
       querySnap.forEach(doc => {
         const currRoom = doc.data();
@@ -35,14 +35,14 @@ const RoomsProvider = ({ children }) => {
       });
 
       setRooms(roomsData);
-      setIsLoading(false);
+      setisRoomsLoading(false);
     });
 
     return () => roomsDocsUnsub();
   }, [user]);
 
   return (
-    <RoomsContext.Provider value={{ rooms, isLoading }}>
+    <RoomsContext.Provider value={{ rooms, isRoomsLoading }}>
       {children}
     </RoomsContext.Provider>
   );

@@ -7,7 +7,7 @@ const RoomsListItem = ({ data, active }) => {
   const [title, setTitle] = useState('Not available');
   const [updatedAt, setUpdatedAt] = useState(new Date());
   const [lastMessage, setLastMessage] = useState('No messages yet...');
-  console.log(lastMessage);
+  //console.log(lastMessage);
 
   useEffect(() => {
     const getMessage = async () => {

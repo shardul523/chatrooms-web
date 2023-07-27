@@ -8,9 +8,9 @@ import Anchor from '../Anchor';
 
 const RoomsList = ({ height }) => {
   const location = useLocation();
-  const { rooms, isLoading } = useRooms();
+  const { rooms, isRoomsLoading } = useRooms();
 
-  if (isLoading)
+  if (isRoomsLoading)
     return (
       <Flex justify={'center'} align={'center'} h={height}>
         <Spinner color="purple" />
