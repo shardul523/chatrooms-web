@@ -60,14 +60,16 @@ export const getUser = async userId => {
   return userDocSnap;
 };
 
-export const getRoomMessages = async roomId => {
+export const getRoomMessagesSnap = async roomId => {
   const messagesCollectionRef = collection(db, 'rooms', roomId, 'messages');
   const messagesQuery = query(messagesCollectionRef, orderBy('sentAt', 'desc'));
   const allMessagesSnap = await getDocs(messagesQuery);
+  // console.log(allMessagesSnap);
   return allMessagesSnap;
 };
 
 export const getDataFromSnap = snap => {
+  if (snap.empty) return null;
   const data = snap.data();
   data.id = snap.id;
   return data;

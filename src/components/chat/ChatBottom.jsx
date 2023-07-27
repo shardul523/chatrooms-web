@@ -16,6 +16,7 @@ const ChatBottom = ({ roomId }) => {
       messageText: msgText,
       senderId: user.uid,
       sentAt: new Date(),
+      roomId,
     };
 
     addNewChat(roomId, newChat);

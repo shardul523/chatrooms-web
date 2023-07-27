@@ -13,7 +13,8 @@ const RoomsListItem = ({ data, active }) => {
     const getMessage = async () => {
       const lastMessageSnap = await getDoc(data.lastMessageRef);
       if (!lastMessageSnap) return;
-      setLastMessage(lastMessageSnap.data().messageText);
+      lastMessageSnap.data()?.messageText &&
+        setLastMessage(lastMessageSnap.data().messageText);
     };
 
     getMessage();

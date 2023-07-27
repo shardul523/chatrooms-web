@@ -11,6 +11,7 @@ const RoomsProvider = ({ children }) => {
   const { user } = useGetUser();
 
   useEffect(() => {
+    setisRoomsLoading(true);
     if (!user) return;
     const userRooms = user.rooms || [];
 
