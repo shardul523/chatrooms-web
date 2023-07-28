@@ -4,7 +4,7 @@ import { getFirestore} from 'firebase/firestore'
 import {getStorage} from 'firebase/storage'
 
 const firebaseConfig = {
-    apiKey: import.meta.env.VITE_API_KEY,
+    apiKey: 'AIzaSyCKm5BmFMJQkoI8cfe_e5kWw_xOLs95fSI',
     authDomain: 'chatrooms-web.firebaseapp.com',
     projectId: 'chatrooms-web',
     storageBucket: 'chatrooms-web.appspot.com',
