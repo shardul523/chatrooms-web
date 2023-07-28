@@ -27,6 +27,4 @@ dist-ssr
 # Environment variables
 *.local
 
-
-src/config/firebase.js
 .firebase/*
