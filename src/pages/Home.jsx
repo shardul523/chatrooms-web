@@ -32,7 +32,7 @@ const Home = () => {
   }, [disclosure, toast]);
 
   const match = useMatch('/chat/:chatId');
-  const isDesktop = useBreakpointValue({ base: false, md: true });
+  const isDesktop = useBreakpointValue({ base: false, lg: true });
   const canRenderSideBar = isDesktop || !match;
 
   //console.log(rooms);

@@ -10,7 +10,8 @@ const ChatTop = ({ title }) => {
     <Card
       bg={'purple.500'}
       color={'white'}
-      roundedTopEnd={0}
+      roundedTopRight={0}
+      roundedTopLeft={0}
       roundedBottomRight={0}
     >
       <CardBody>

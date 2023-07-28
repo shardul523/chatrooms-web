@@ -25,7 +25,7 @@ const RoomsList = ({ height }) => {
       {rooms.map((roomData, index) => {
         const isActive = `/chat/${roomData.roomId}` === location.pathname;
         return (
-          <Anchor to={`/chat/${roomData.roomId}`} key={index} replace>
+          <Anchor to={`/chat/${roomData.roomId}`} key={index}>
             <RoomsListItem data={roomData} active={isActive} />
             <Divider />
           </Anchor>
