@@ -49,7 +49,7 @@ const Home = () => {
         finalFocusRef={dashboardBtnRef}
         onSignOut={onSignOut}
       />
-      <SimpleGrid columns={[1, 1, 1, 3]} h={'100vh'}>
+      <SimpleGrid columns={[1, 1, 1, 3]} h={`${window.innerHeight}px`}>
         {canRenderSideBar && (
           <GridItem maxH={'100%'}>
             <TopSideBar

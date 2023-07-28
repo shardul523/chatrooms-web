@@ -40,7 +40,7 @@ const ChatPage = () => {
   //console.log(currRoom, currRoomMessages);
 
   return (
-    <Grid templateRows={'auto 1fr auto'} height={'100vh'} gap={0}>
+    <Grid templateRows={'auto 1fr auto'} h={`${window.innerHeight}px`} gap={0}>
       <GridItem>
         <ChatTop title={currRoom.title} desc={currRoom.description} />
       </GridItem>
