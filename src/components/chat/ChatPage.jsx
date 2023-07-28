@@ -7,7 +7,6 @@ import SpinningLoader from '../UI/SpinningLoader';
 import { useRooms } from '../../context/RoomsContext';
 import { useMessages } from '../../context/MessagesContext';
 import { useEffect, useState } from 'react';
-import ListContainer from '../UI/ListContainer';
 
 const getCurrRoom = (rooms, currId) => {
   let roomNeeded = null;

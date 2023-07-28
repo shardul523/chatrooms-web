@@ -40,6 +40,8 @@ const JoinChatRoom = () => {
 
       res.forEach(doc => joinRoom(doc.id, user.uid));
 
+      onClose();
+
       toast({ status: 'success', title: 'Room joined successfully' });
     } catch (err) {
       toast({ status: 'error', title: err.message });
