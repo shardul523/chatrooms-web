@@ -3,8 +3,8 @@ import { RiSendPlaneFill } from 'react-icons/ri';
 import { useRef } from 'react';
 
 import ChatInput from './ChatInput';
-import { useGetUser } from '../../context/UserContext';
-import { addNewChat } from '../../utility';
+import { useGetUser } from '../../../context/UserContext';
+import { addNewChat } from '../../../utility';
 
 const ChatBottom = ({ roomId }) => {
   const chatInputRef = useRef();

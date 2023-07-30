@@ -1,8 +1,8 @@
 import { Grid, GridItem } from '@chakra-ui/react';
 import { Navigate, useParams } from 'react-router-dom';
-import ChatTop from './ChatTop';
-import ChatMessages from './ChatMessages';
-import ChatBottom from './ChatBottom';
+import ChatTop from './top/ChatTop';
+import ChatMessages from './main/ChatMessages';
+import ChatBottom from './bottom/ChatBottom';
 import SpinningLoader from '../UI/SpinningLoader';
 import { useRooms } from '../../context/RoomsContext';
 import { useMessages } from '../../context/MessagesContext';

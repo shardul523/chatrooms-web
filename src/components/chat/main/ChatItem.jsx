@@ -1,8 +1,8 @@
 import { Flex, Text } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
-import { getUser } from '../../utility';
-import { useGetUser } from '../../context/UserContext';
-import ProfileAvatar from '../UI/ProfileAvatar';
+import { getUser } from '../../../utility';
+import { useGetUser } from '../../../context/UserContext';
+import ProfileAvatar from '../../UI/ProfileAvatar';
 
 const ChatItem = ({ message }) => {
   const [sentBy, setSentBy] = useState(null);
